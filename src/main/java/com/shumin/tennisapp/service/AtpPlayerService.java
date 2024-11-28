@@ -15,6 +15,10 @@ public class AtpPlayerService {
     @Autowired
     private AtpPlayerRepository atpPlayerRepository;
 
+    public void setAtpPlayerRepository(AtpPlayerRepository atpPlayerRepository) {
+        this.atpPlayerRepository = atpPlayerRepository;
+    }
+
     public List<AtpPlayerDto> getAllAtpPlayers() {
         List<AtpPlayer> atpPlayers = atpPlayerRepository.findAll();
         List<AtpPlayerDto> atpPlayerDtos = new ArrayList<>();
@@ -22,6 +26,10 @@ public class AtpPlayerService {
             atpPlayerDtos.add(getAtpPlayerDto(atpPlayer));
         }
         return atpPlayerDtos;
+    }
+
+    public List<Object[]> getPlayersByHand() {
+        return atpPlayerRepository.countPlayersByHand();
     }
 
     private AtpPlayerDto getAtpPlayerDto(AtpPlayer atpPlayer) {
