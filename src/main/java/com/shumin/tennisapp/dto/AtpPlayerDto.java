@@ -1,5 +1,7 @@
 package com.shumin.tennisapp.dto;
 
+import com.shumin.tennisapp.model.AtpPlayer;
+
 public class AtpPlayerDto {
     private int playerId;
 
@@ -15,6 +17,16 @@ public class AtpPlayerDto {
     private int height;
 
     public AtpPlayerDto() {
+    }
+
+    public AtpPlayerDto(AtpPlayer atpPlayer) {
+        this.playerId = atpPlayer.getPlayerId();
+        this.nameFirst = atpPlayer.getNameFirst();
+        this.nameLast = atpPlayer.getNameLast();
+        this.hand = atpPlayer.getHand();
+        this.dob = atpPlayer.getDob();
+        this.ioc = atpPlayer.getIoc();
+        this.height = atpPlayer.getHeight();
     }
 
     public int getPlayerId() {

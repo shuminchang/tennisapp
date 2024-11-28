@@ -2,6 +2,7 @@ package com.shumin.tennisapp.service;
 
 import com.shumin.tennisapp.dto.AtpPlayerDto;
 import com.shumin.tennisapp.model.AtpPlayer;
+import com.shumin.tennisapp.model.AtpPlayerOM;
 import com.shumin.tennisapp.repository.AtpPlayerRepository;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,10 +28,7 @@ public class AtpPlayerServiceTest {
 
     @Test
     void testGetAllAtpPlayers() {
-        AtpPlayer player = new AtpPlayer();
-        player.setPlayerId(1);
-        player.setNameFirst("Roger");
-        player.setNameLast("Federer");
+        AtpPlayer player = AtpPlayerOM.newAtpPlayerByFirstNameLastName("Roger", "Federer");
 
         EasyMock.expect(atpPlayerRepositoryMock.findAll()).andReturn(Arrays.asList(player));
         EasyMock.replay(atpPlayerRepositoryMock);

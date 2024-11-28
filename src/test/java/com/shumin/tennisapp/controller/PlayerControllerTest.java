@@ -1,6 +1,9 @@
 package com.shumin.tennisapp.controller;
 
 import com.shumin.tennisapp.dto.AtpPlayerDto;
+import com.shumin.tennisapp.dto.AtpPlayerDtoOM;
+import com.shumin.tennisapp.model.AtpPlayer;
+import com.shumin.tennisapp.model.AtpPlayerOM;
 import com.shumin.tennisapp.service.AtpPlayerService;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,12 +37,10 @@ public class PlayerControllerTest {
 
     @Test
     void testGetAllAtpPlayers() throws Exception {
-        AtpPlayerDto player = new AtpPlayerDto();
-        player.setPlayerId(1);
-        player.setNameFirst("Roger");
-        player.setNameLast("Federer");
-
-        List<AtpPlayerDto> players = Arrays.asList(player);
+        AtpPlayer player = AtpPlayerOM.newAtpPlayerByFirstNameLastName("Roger", "Federer");
+        AtpPlayerDto dto = AtpPlayerDtoOM.newAtpPlayerDto(player);
+        // new dto not model
+        List<AtpPlayerDto> players = Arrays.asList(dto);
 
         // Define EasyMock behavior
         EasyMock.expect(atpPlayerServiceMock.getAllAtpPlayers()).andReturn(players);

@@ -1,6 +1,7 @@
 package com.shumin.tennisapp.repository;
 
 import com.shumin.tennisapp.model.AtpPlayer;
+import com.shumin.tennisapp.model.AtpPlayerOM;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,10 @@ public class AtpPlayerRepositoryTest {
     @Test
     void testCountPlayersByHand() {
         // Arrange
-        AtpPlayer player1 = createPlayer("R");
+        AtpPlayer player1 = AtpPlayerOM.newAtpPlayerByHand("R");
         atpPlayerRepository.save(player1);
 
-        AtpPlayer player2 = createPlayer("L");
+        AtpPlayer player2 = AtpPlayerOM.newAtpPlayerByHand("L");
         atpPlayerRepository.save(player2);
 
         // Act
