@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -62,11 +63,30 @@ public class AtpPlayerServiceTest {
 
         EasyMock.replay(atpPlayerRepositoryMock);
 
-        List<Object[]> result = atpPlayerRepositoryMock.findHeightVsAge();
+        List<Object[]> result = atpPlayerService.findHeightVsAge();
+        EasyMock.verify(atpPlayerRepositoryMock);
+
         assertEquals(2, result.size());
         assertEquals(180, result.get(0)[0]);
         assertEquals(25, result.get(0)[1]);
+
+        EasyMock.reset(atpPlayerRepositoryMock);
+    }
+
+    @Test
+    void testFindGroupedHeights() {
+        List<Integer> mockData = List.of(180, 190);
+        EasyMock.expect(atpPlayerRepositoryMock.findAllHeights()).andReturn(mockData);
+
+        EasyMock.replay(atpPlayerRepositoryMock);
+
+        Map<String, Integer> result = atpPlayerService.findGroupedHeights();
+
         EasyMock.verify(atpPlayerRepositoryMock);
+
+        assertEquals(14, result.size());
+        assertEquals(1, result.get("180-185"));
+        assertEquals(1, result.get("190-195"));
 
         EasyMock.reset(atpPlayerRepositoryMock);
     }

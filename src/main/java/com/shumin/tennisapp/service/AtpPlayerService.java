@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AtpPlayerService {
@@ -49,5 +51,39 @@ public class AtpPlayerService {
 
     public List<Object[]> findHeightVsAge() {
         return atpPlayerRepository.findHeightVsAge();
+    }
+
+    public Map<String, Integer> findGroupedHeights() {
+        List<Integer> heights = atpPlayerRepository.findAllHeights();
+
+        // Define bins
+        int[] bins = {145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210};
+        Map<String, Integer> groupedData = new LinkedHashMap<>();
+
+        // Initialize bins
+        for (int i = 0; i < bins.length - 1; i++) {
+            String range = bins[i] + "-" + bins[i + 1];
+            groupedData.put(range, 0);
+        }
+        groupedData.put(bins[bins.length - 1] + "+", 0);
+
+        // Group heights into bins
+        for (int height : heights) {
+            boolean added = false;
+            for (int i = 0; i < bins.length - 1; i++) {
+                if (height >= bins[i] && height < bins[i + 1]) {
+                    String range = bins[i] + "-" + bins[i + 1];
+                    groupedData.put(range, groupedData.get(range) + 1);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                String lastRange = bins[bins.length - 1] + "+";
+                groupedData.put(lastRange, groupedData.get(lastRange) + 1);
+            }
+        }
+
+        return groupedData;
     }
 }

@@ -31,6 +31,7 @@ public class AtpPlayerRepositoryTest {
         atpPlayerRepository.deleteAll();
     }
 
+    @Deprecated
     private AtpPlayer createPlayer(String hand) {
         AtpPlayer player = new AtpPlayer();
         player.setHand(hand);
@@ -71,6 +72,20 @@ public class AtpPlayerRepositoryTest {
         assertEquals(190, results.get(1)[0]);
         assertEquals(30, results.get(1)[1]);
 
+    }
+
+    @Test
+    void testFindAllHeights() {
+        AtpPlayer player1 = AtpPlayerOM.newAtpPlayerByHeightAge(180, 25);
+        atpPlayerRepository.save(player1);
+        AtpPlayer player2 = AtpPlayerOM.newAtpPlayerByHeightAge(190, 25);
+        atpPlayerRepository.save(player2);
+
+        List<Integer> results = atpPlayerRepository.findAllHeights();
+
+        assertEquals(2, results.size());
+        assertEquals(180, results.get(0));
+        assertEquals(190, results.get(1));
     }
 
 }

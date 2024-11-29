@@ -15,4 +15,7 @@ public interface AtpPlayerRepository extends JpaRepository<AtpPlayer, Integer> {
 
     @Query("SELECT a.height, a.age FROM AtpPlayer a WHERE a.height IS NOT NULL AND a.age IS NOT NULL")
     List<Object[]> findHeightVsAge();
+
+    @Query("SELECT a.height FROM AtpPlayer a WHERE a.height IS NOT NULL")
+    List<Integer> findAllHeights();
 }

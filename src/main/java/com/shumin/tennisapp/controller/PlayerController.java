@@ -55,4 +55,9 @@ public class PlayerController {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/height-distribution")
+    public Map<String, Integer>  getAllHeights() {
+        return atpPlayerService.findGroupedHeights();
+    }
 }

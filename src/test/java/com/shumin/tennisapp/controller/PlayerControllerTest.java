@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -88,6 +89,26 @@ public class PlayerControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$[0].height").value(180))
                         .andExpect(jsonPath("$[0].age").value(25));
+
+        EasyMock.verify(atpPlayerServiceMock);
+        EasyMock.reset(atpPlayerServiceMock);
+    }
+
+    @Test
+    void testGetAllHeights() throws Exception {
+
+        Map<String, Integer> mockData = Map.of(
+                "150", 1,
+                "160", 2
+        );
+        EasyMock.expect(atpPlayerServiceMock.findGroupedHeights()).andReturn(mockData);
+
+        EasyMock.replay(atpPlayerServiceMock);
+
+        mockMvc.perform(get("/api/height-distribution").accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.150").value(1))
+                        .andExpect(jsonPath("$.160").value(2));
 
         EasyMock.verify(atpPlayerServiceMock);
         EasyMock.reset(atpPlayerServiceMock);
