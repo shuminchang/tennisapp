@@ -54,4 +54,20 @@ public class AtpPlayerServiceTest {
 
         EasyMock.verify(atpPlayerRepositoryMock);
     }
+
+    @Test
+    void testFindHeightVsAge() {
+        List<Object[]> mockData = List.of(new Object[]{180, 25}, new Object[]{190, 30});
+        EasyMock.expect(atpPlayerRepositoryMock.findHeightVsAge()).andReturn(mockData);
+
+        EasyMock.replay(atpPlayerRepositoryMock);
+
+        List<Object[]> result = atpPlayerRepositoryMock.findHeightVsAge();
+        assertEquals(2, result.size());
+        assertEquals(180, result.get(0)[0]);
+        assertEquals(25, result.get(0)[1]);
+        EasyMock.verify(atpPlayerRepositoryMock);
+
+        EasyMock.reset(atpPlayerRepositoryMock);
+    }
 }

@@ -56,4 +56,21 @@ public class AtpPlayerRepositoryTest {
         assertEquals(1L, results.get(1)[1]);
     }
 
+    @Test
+    void testFindHeightVsAge() {
+        AtpPlayer player1 = AtpPlayerOM.newAtpPlayerByHeightAge(180, 25);
+        atpPlayerRepository.save(player1);
+        AtpPlayer player2 = AtpPlayerOM.newAtpPlayerByHeightAge(190, 30);
+        atpPlayerRepository.save(player2);
+
+        List<Object[]> results = atpPlayerRepository.findHeightVsAge();
+
+        assertEquals(2, results.size());
+        assertEquals(180, results.get(0)[0]);
+        assertEquals(25, results.get(0)[1]);
+        assertEquals(190, results.get(1)[0]);
+        assertEquals(30, results.get(1)[1]);
+
+    }
+
 }

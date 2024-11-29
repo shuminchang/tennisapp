@@ -75,4 +75,21 @@ public class PlayerControllerTest {
         // Verify interaction
         EasyMock.verify(atpPlayerServiceMock);
     }
+
+    @Test
+    void testGetHeightVsAge() throws Exception {
+
+        List<Object[]> mockData = List.of(new Object[]{180, 25}, new Object[]{190, 30});
+        EasyMock.expect(atpPlayerServiceMock.findHeightVsAge()).andReturn(mockData);
+
+        EasyMock.replay(atpPlayerServiceMock);
+
+        mockMvc.perform(get("/api/height-vs-age").accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$[0].height").value(180))
+                        .andExpect(jsonPath("$[0].age").value(25));
+
+        EasyMock.verify(atpPlayerServiceMock);
+        EasyMock.reset(atpPlayerServiceMock);
+    }
 }

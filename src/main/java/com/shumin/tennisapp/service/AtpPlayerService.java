@@ -23,7 +23,9 @@ public class AtpPlayerService {
         List<AtpPlayer> atpPlayers = atpPlayerRepository.findAll();
         List<AtpPlayerDto> atpPlayerDtos = new ArrayList<>();
         for (AtpPlayer atpPlayer : atpPlayers) {
-            atpPlayerDtos.add(getAtpPlayerDto(atpPlayer));
+            if (atpPlayer.getHeight() != null) {
+                atpPlayerDtos.add(getAtpPlayerDto(atpPlayer));
+            }
         }
         return atpPlayerDtos;
     }
@@ -41,6 +43,11 @@ public class AtpPlayerService {
         atpPlayerDto.setDob(atpPlayer.getDob());
         atpPlayerDto.setIoc(atpPlayer.getIoc());
         atpPlayerDto.setHeight(atpPlayer.getHeight());
+        atpPlayerDto.setAge(atpPlayerDto.getAge());
         return atpPlayerDto;
+    }
+
+    public List<Object[]> findHeightVsAge() {
+        return atpPlayerRepository.findHeightVsAge();
     }
 }

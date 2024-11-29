@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface AtpPlayerRepository extends JpaRepository<AtpPlayer, Integer> {
 
-    @Query("SELECT hand, COUNT(hand) FROM AtpPlayer GROUP BY hand")
+    @Query("SELECT hand, COUNT(hand) FROM AtpPlayer WHERE hand IS NOT NULL GROUP BY hand")
     List<Object[]> countPlayersByHand();
+
+    @Query("SELECT a.height, a.age FROM AtpPlayer a WHERE a.height IS NOT NULL AND a.age IS NOT NULL")
+    List<Object[]> findHeightVsAge();
 }

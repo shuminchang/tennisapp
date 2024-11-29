@@ -45,4 +45,14 @@ public class PlayerController {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/height-vs-age")
+    public List<Map<String, Object>> getHeightVsAge() {
+        return atpPlayerService.findHeightVsAge().stream()
+                .map(result -> Map.of(
+                        "height", result[0],
+                        "age", result[1]
+                ))
+                .collect(Collectors.toList());
+    }
 }

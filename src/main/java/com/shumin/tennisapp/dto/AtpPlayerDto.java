@@ -16,6 +16,8 @@ public class AtpPlayerDto {
 
     private int height;
 
+    private int age;
+
     public AtpPlayerDto() {
     }
 
@@ -27,6 +29,7 @@ public class AtpPlayerDto {
         this.dob = atpPlayer.getDob();
         this.ioc = atpPlayer.getIoc();
         this.height = atpPlayer.getHeight();
+        this.age = atpPlayer.getAge();
     }
 
     public int getPlayerId() {
@@ -83,5 +86,13 @@ public class AtpPlayerDto {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
