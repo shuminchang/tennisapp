@@ -90,4 +90,41 @@ public class AtpPlayerServiceTest {
 
         EasyMock.reset(atpPlayerRepositoryMock);
     }
+
+    @Test
+    void testClusterPlayers() {
+        // Mock data for players
+        List<AtpPlayer> mockPlayers = List.of(
+                AtpPlayerOM.newAtpPlayerByHeightAgeHand(180, 25, "R"),
+                AtpPlayerOM.newAtpPlayerByHeightAgeHand(175, 30, "L"),
+                AtpPlayerOM.newAtpPlayerByHeightAgeHand(185, 24, "R"),
+                AtpPlayerOM.newAtpPlayerByHeightAgeHand(170, 35, "L")
+        );
+
+        // Mock the repository call
+        EasyMock.expect(atpPlayerRepositoryMock.findAll()).andReturn(mockPlayers);
+        EasyMock.replay(atpPlayerRepositoryMock);
+
+        // Inject the mock repository into the service
+        atpPlayerService.setAtpPlayerRepository(atpPlayerRepositoryMock);
+
+        // Perform clustering with 2 clusters
+        int numClusters = 2;
+        List<Map<String, Object>> clusters = atpPlayerService.playerHeightAgeHandClusters(numClusters);
+
+        // Validate the results
+        assertEquals(4, clusters.size(), "Number of clustered points should match the input");
+
+        // Check that cluster IDs are assigned correctly
+        clusters.forEach(cluster -> {
+            System.out.println(cluster);
+            assertEquals(4, cluster.size(), "Each cluster point should have 3 attributes (height, age, hand)");
+            assertEquals(true, cluster.containsKey("cluster"), "Each cluster should have a cluster ID");
+            assertEquals(true, cluster.containsKey("height"), "Each cluster should include height");
+            assertEquals(true, cluster.containsKey("age"), "Each cluster should include age");
+            assertEquals(true, cluster.containsKey("hand"), "Each cluster should include hand");
+        });
+
+        EasyMock.verify(atpPlayerRepositoryMock);
+    }
 }

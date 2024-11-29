@@ -5,10 +5,7 @@ import com.shumin.tennisapp.model.AtpPlayer;
 import com.shumin.tennisapp.service.AtpPlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -60,4 +57,10 @@ public class PlayerController {
     public Map<String, Integer>  getAllHeights() {
         return atpPlayerService.findGroupedHeights();
     }
+
+    @GetMapping("/player-height-age-hand-clusters")
+    public List<Map<String, Object>> getPlayerClusters(@RequestParam int numClusters) {
+        return atpPlayerService.playerHeightAgeHandClusters(numClusters);
+    }
+
 }

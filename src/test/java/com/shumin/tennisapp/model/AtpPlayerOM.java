@@ -31,4 +31,10 @@ public class AtpPlayerOM {
         ret.setAge(age);
         return ret;
     }
+
+    public static AtpPlayer newAtpPlayerByHeightAgeHand(Integer height, Integer age, String hand) {
+        AtpPlayer ret = newAtpPlayerByHeightAge(height, age);
+        ret.setHand(hand);
+        return ret;
+    }
 }

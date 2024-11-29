@@ -3,6 +3,10 @@ package com.shumin.tennisapp.service;
 import com.shumin.tennisapp.dto.AtpPlayerDto;
 import com.shumin.tennisapp.model.AtpPlayer;
 import com.shumin.tennisapp.repository.AtpPlayerRepository;
+import org.apache.commons.math3.ml.clustering.CentroidCluster;
+import org.apache.commons.math3.ml.clustering.Cluster;
+import org.apache.commons.math3.ml.clustering.DoublePoint;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,5 +89,38 @@ public class AtpPlayerService {
         }
 
         return groupedData;
+    }
+
+    public List<Map<String, Object>> playerHeightAgeHandClusters(int numClusters) {
+        List<AtpPlayer> players = atpPlayerRepository.findAll();
+        List<DoublePoint> points = new ArrayList<>();
+
+        // Prepare data points for clustering
+        for (AtpPlayer player : players) {
+            if (player.getHeight() != null && player.getAge() != null && player.getHand() != null) {
+                double handValue = "R".equals(player.getHand()) ? 1.0 : ("L".equals(player.getHand()) ? -1.0 : 0.0);
+                points.add(new DoublePoint(new double[]{player.getHeight(), player.getAge(), handValue}));
+            }
+        }
+
+        // Perform K-Means clustering
+        KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(numClusters);
+        List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
+
+        // Prepare cluster results
+        List<Map<String, Object>> results = new ArrayList<>();
+        for (int i = 0; i < clusters.size(); i++) {
+            Cluster<DoublePoint> cluster = clusters.get(i);
+            for (DoublePoint point : cluster.getPoints()) {
+                results.add(Map.of(
+                        "cluster", i,
+                        "height", point.getPoint()[0],
+                        "age", point.getPoint()[1],
+                        "hand", point.getPoint()[2]
+                ));
+            }
+        }
+
+        return results;
     }
 }
