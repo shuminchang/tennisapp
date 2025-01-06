@@ -1,10 +1,9 @@
 package com.shumin.tennisapp.controller;
 
 import com.shumin.tennisapp.dto.AtpPlayerDto;
-import com.shumin.tennisapp.model.AtpPlayer;
+import com.shumin.tennisapp.exceptions.PlayerException;
 import com.shumin.tennisapp.service.AtpPlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +28,12 @@ public class PlayerController {
     }
 
     @GetMapping("/players")
-    public List<AtpPlayerDto> getAllAtpPlayers() {
+    public List<AtpPlayerDto> getAllAtpPlayers() throws PlayerException {
         return atpPlayerService.getAllAtpPlayers();
     }
 
     @GetMapping("/player-by-hand")
-    public List<Map<String, Object>> getPlayersByHand() {
+    public List<Map<String, Object>> getPlayersByHand() throws PlayerException {
         return atpPlayerService.getPlayersByHand().stream()
                 .map(result -> Map.of(
                         "hand", result[0],
@@ -44,7 +43,7 @@ public class PlayerController {
     }
 
     @GetMapping("/height-vs-age")
-    public List<Map<String, Object>> getHeightVsAge() {
+    public List<Map<String, Object>> getHeightVsAge() throws PlayerException {
         return atpPlayerService.findHeightVsAge().stream()
                 .map(result -> Map.of(
                         "height", result[0],
@@ -54,12 +53,12 @@ public class PlayerController {
     }
 
     @GetMapping("/height-distribution")
-    public Map<String, Integer>  getAllHeights() {
+    public Map<String, Integer>  getAllHeights() throws PlayerException {
         return atpPlayerService.findGroupedHeights();
     }
 
     @GetMapping("/player-height-age-hand-clusters")
-    public List<Map<String, Object>> getPlayerClusters(@RequestParam int numClusters) {
+    public List<Map<String, Object>> getPlayerClusters(@RequestParam int numClusters) throws PlayerException {
         return atpPlayerService.playerHeightAgeHandClusters(numClusters);
     }
 
